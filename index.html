@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12112f">
+<title>Gym Guide</title>
+<style>
+:root{
+ --bg:#11102d;--panel:#181741;--panel2:#11112d;--line:#302d65;
+ --purple:#7c5cff;--purple2:#9b7cff;--white:#f8f7ff;--muted:#aaa7c9;
+ --green:#63d6a1;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#30276b 0,#11102d 43%);color:var(--white);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button{font:inherit;color:inherit}
+.app{width:min(1180px,100%);margin:auto;padding:18px 18px 50px}
+.topbar{height:86px;display:flex;gap:14px;align-items:center;background:rgba(28,27,67,.9);border:1px solid #292657;border-radius:28px;padding:10px 12px;position:sticky;top:10px;z-index:20;backdrop-filter:blur(16px)}
+.iconbtn{width:66px;height:66px;border:0;border-radius:21px;background:#29275b;display:grid;place-items:center;font-size:29px;cursor:pointer}
+.iconbtn:hover{background:#3b3479}
+.brand{height:66px;flex:1;border-radius:21px;background:linear-gradient(135deg,#5d45ca,#7b5be8);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:850;letter-spacing:.2px}
+.page{display:grid;grid-template-columns:330px 1fr;gap:18px;margin-top:18px}
+.card{background:linear-gradient(180deg,rgba(28,27,66,.96),rgba(18,18,46,.96));border:1px solid var(--line);border-radius:28px;box-shadow:0 18px 50px #08071b66}
+.sidebar{padding:18px;align-self:start;position:sticky;top:114px}
+.kicker{font-size:13px;color:#9b96c7;text-transform:uppercase;letter-spacing:1.5px;font-weight:800;margin:4px 4px 7px}
+h1{font-size:30px;margin:0 0 6px}
+.sub{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.viewtoggle{display:flex;background:#0e0e28;padding:4px;border-radius:14px;margin:18px 0 14px}
+.viewtoggle button{flex:1;border:0;background:transparent;padding:10px;border-radius:11px;font-weight:800;color:#aaa7c9;cursor:pointer}
+.viewtoggle button.active{background:#3a3177;color:white}
+.muscles{display:grid;gap:9px}
+.muscle{border:1px solid #292753;background:#10102b;border-radius:18px;padding:11px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;transition:.18s}
+.muscle:hover{border-color:#6552c9;transform:translateY(-1px)}
+.muscle.active{background:linear-gradient(135deg,#302567,#211b50);border-color:var(--purple);box-shadow:0 0 0 1px #7c5cff33}
+.muscle-icon{width:47px;height:47px;border-radius:14px;background:#1c1a43;display:grid;place-items:center;font-size:25px;flex:none}
+.muscle.active .muscle-icon{background:#5a42bd}
+.muscle-name{font-weight:800;font-size:16px}
+.muscle-count{display:block;color:#8986ae;font-size:12px;margin-top:2px}
+.chev{margin-left:auto;color:#77739f;font-size:22px}
+.main{padding:22px}
+.hero{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.hero h1{font-size:34px}
+.badge{background:#282356;border:1px solid #433a7d;color:#c9c1ff;padding:8px 12px;border-radius:999px;font-weight:800;font-size:13px;white-space:nowrap}
+.exercise-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}
+.exercise{background:#10102b;border:1px solid #292753;border-radius:18px;padding:13px;cursor:pointer;display:flex;gap:11px;align-items:center;text-align:left;min-width:0}
+.exercise:hover{border-color:#6552c9}
+.exercise.selected{border-color:var(--purple);background:linear-gradient(135deg,#211b4c,#11102d)}
+.thumb{width:57px;height:57px;border-radius:15px;background:linear-gradient(135deg,#efeefa,#aaa6bd);display:grid;place-items:center;color:#171632;font-size:24px;flex:none}
+.exname{font-weight:800;font-size:14px;line-height:1.25}
+.exmeta{font-size:11px;color:#8986ae;margin-top:4px}
+.details{margin-top:14px;background:#0c0c24;border:1px solid #292753;border-radius:23px;overflow:hidden}
+.detail-title{padding:17px 18px 10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.detail-title h2{margin:0;font-size:22px}
+.heart{border:0;background:#1b193f;border-radius:12px;width:40px;height:40px;cursor:pointer;font-size:22px}
+.video{margin:0 18px;border-radius:17px;overflow:hidden;aspect-ratio:16/9;background:#05050d;position:relative}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:14px 18px 0}
+.meta-box{background:#151433;border:1px solid #25234d;border-radius:14px;padding:11px}
+.meta-box b{display:block;color:#918bba;font-size:11px;margin-bottom:4px}
+.meta-box span{font-size:13px;font-weight:800}
+.instructions{padding:15px 18px}
+.instructions h3{margin:0 0 10px;font-size:17px}
+.step{display:flex;gap:10px;margin:9px 0;color:#c4c1db;font-size:13px;line-height:1.4}
+.num{width:25px;height:25px;border-radius:50%;background:#5a42bd;display:grid;place-items:center;font-size:12px;font-weight:900;flex:none}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid #25234d;padding:15px 18px;background:#10102c}
+.sets strong{display:block;font-size:12px}.sets span{font-size:13px;color:#a995ff;font-weight:800}
+.add{border:0;background:linear-gradient(135deg,#6848df,#855fff);padding:13px 19px;border-radius:14px;font-weight:900;cursor:pointer;box-shadow:0 9px 25px #6848df33}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:#f7f5ff;color:#15132d;padding:12px 18px;border-radius:13px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.body-note{font-size:11px;color:#7f7ba6;margin-top:12px;text-align:center}
+
+.quick-demo{margin:0 18px;border-radius:17px;overflow:hidden;background:#070713;border:1px solid #302d65}
+.demo-top{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;font-size:10px;font-weight:900;color:#aaa7c9;letter-spacing:.7px}
+.demo-top span:first-child{color:#b59cff}
+.anatomy-stage{height:355px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 20%,#252341 0,#0e0e20 57%,#070710 100%)}
+.anatomy-stage:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.8%,#ffffff08 50%,transparent 50.2%);pointer-events:none}
+.floor{position:absolute;left:0;right:0;bottom:0;height:63px;background:linear-gradient(#121226,#080812);border-top:1px solid #292753}
+.stage-label{position:absolute;top:18px;z-index:7;font-size:9px;line-height:1.35;letter-spacing:1px;color:#777494}
+.stage-label.left{left:16px}.stage-label.right{right:16px;text-align:right}
+.stage-label b{color:#b39aff}
+.machine{position:absolute;background:#4b4957;z-index:1}
+.machine-seat{width:145px;height:20px;left:50%;bottom:91px;transform:translateX(-50%);border-radius:14px;box-shadow:0 10px 0 #25243a}
+.machine-frame{width:9px;height:205px;right:23%;bottom:72px;border-radius:8px;transform:skewX(-4deg);box-shadow:0 0 0 3px #26253a}
+.machine-bar{width:190px;height:8px;left:50%;top:49px;transform:translateX(-50%);border-radius:10px;box-shadow:0 5px 0 #25243a}
+.anatomy-person{position:absolute;width:125px;height:285px;left:50%;bottom:69px;transform:translateX(-50%);z-index:4;animation:bodyLift 4s ease-in-out infinite}
+.a-head{position:absolute;width:38px;height:42px;border-radius:50%;left:44px;top:0;background:linear-gradient(145deg,#dddce3,#8f8e9a);box-shadow:inset -7px -5px 0 #777684}
+.a-neck{position:absolute;width:22px;height:25px;left:52px;top:34px;background:#b7b5c0}
+.a-torso{position:absolute;width:62px;height:105px;left:31px;top:52px;border-radius:27px 27px 20px 20px;background:linear-gradient(90deg,#8d8b97,#dedde2 45%,#8a8995);clip-path:polygon(18% 0,82% 0,100% 25%,86% 100%,14% 100%,0 25%)}
+.a-muscle{position:absolute;background:linear-gradient(135deg,#d6d4da,#9b99a6);border-radius:50%;z-index:2}
+.a-muscle.shoulder-l,.a-muscle.shoulder-r{width:25px;height:31px;top:54px;background:linear-gradient(135deg,#ff654f,#b92f2f);box-shadow:0 0 13px #ff4f3c66;animation:musclePulse 4s ease-in-out infinite}
+.shoulder-l{left:19px}.shoulder-r{right:19px}
+.a-muscle.chest-l,.a-muscle.chest-r{width:27px;height:31px;top:70px;background:#aaa8b2}.chest-l{left:34px}.chest-r{right:34px}
+.a-muscle.lat-l,.a-muscle.lat-r{width:20px;height:57px;top:88px;background:#a3a1ac}.lat-l{left:28px}.lat-r{right:28px}
+.a-muscle.arm-l,.a-muscle.arm-r{width:15px;height:83px;top:60px;border-radius:12px;background:#aaa8b2;transform-origin:top center}
+.arm-l{left:8px;transform:rotate(20deg);animation:pressArmL 4s ease-in-out infinite}
+.arm-r{right:8px;transform:rotate(-20deg);animation:pressArmR 4s ease-in-out infinite}
+.a-muscle.forearm-l,.a-muscle.forearm-r{width:12px;height:72px;top:112px;border-radius:12px;background:#b8b6c0}
+.forearm-l{left:1px;transform:rotate(10deg);animation:pressForeL 4s ease-in-out infinite}
+.forearm-r{right:1px;transform:rotate(-10deg);animation:pressForeR 4s ease-in-out infinite}
+.a-muscle.quad-l,.a-muscle.quad-r{width:25px;height:70px;top:148px;border-radius:13px;background:#aaa8b2}.quad-l{left:31px}.quad-r{right:31px}
+.a-muscle.ham-l,.a-muscle.ham-r{display:none}
+.a-leg{position:absolute;width:22px;height:76px;top:207px;background:#b7b5bf;border-radius:13px;transform-origin:top center}.leg-a-l{left:35px;transform:rotate(8deg)}.leg-a-r{right:35px;transform:rotate(-8deg)}
+.movement-line{position:absolute;color:#9a7aff;font-size:38px;z-index:8;opacity:.65;animation:moveArrow 1.2s ease-in-out infinite}.line-a{left:34%;top:32%}.line-b{right:34%;top:32%;animation-delay:.2s}
+.demo-controls{height:48px;display:flex;align-items:center;gap:10px;padding:8px 12px}
+.demo-controls button{border:1px solid #3a356a;background:#171637;border-radius:10px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer}
+.progress{height:5px;background:#292753;border-radius:99px;flex:1;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:#8b68ff;border-radius:99px;animation:progress 4s linear infinite}
+.demo-controls strong{font-size:11px;color:#aaa7c9}
+@keyframes bodyLift{0%,100%{transform:translateX(-50%) translateY(6px)}50%{transform:translateX(-50%) translateY(-7px)}}
+@keyframes pressArmL{0%,100%{transform:rotate(20deg)}50%{transform:rotate(-58deg)}}
+@keyframes pressArmR{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(58deg)}}
+@keyframes pressForeL{0%,100%{transform:rotate(10deg)}50%{transform:rotate(-3deg)}}
+@keyframes pressForeR{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(3deg)}}
+@keyframes musclePulse{0%,100%{filter:brightness(.85)}50%{filter:brightness(1.5);box-shadow:0 0 20px #ff4f3c99}}
+@keyframes moveArrow{0%,100%{transform:translateY(8px);opacity:.25}50%{transform:translateY(-8px);opacity:.85}}
+@keyframes progress{from{width:0}to{width:100%}}
+
+@media(max-width:900px){
+ .page{grid-template-columns:1fr}.sidebar{position:relative;top:auto}.muscles{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+ .app{padding:10px 10px 35px}.topbar{height:72px;border-radius:21px;top:5px}.iconbtn{width:52px;height:52px;border-radius:16px;font-size:23px}.brand{height:52px;border-radius:16px;font-size:22px}
+ .main{padding:15px}.sidebar{padding:15px}.exercise-grid{grid-template-columns:1fr}.anatomy-stage{height:300px}.meta{grid-template-columns:1fr}.hero h1{font-size:28px}.detail-title h2{font-size:19px}.bottom{align-items:stretch;flex-direction:column}.add{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+ <button class="iconbtn" onclick="history.back()" aria-label="Back">↩</button>
+ <button class="iconbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Workouts">🏋️</button>
+ <div class="brand">Exercises</div>
+</header>
+
+<div class="page">
+<aside class="card sidebar">
+ <div class="kicker">Muscle groups</div>
+ <h1>Choose a body part</h1>
+ <p class="sub">Select a muscle group to see the best gym exercises and demonstrations.</p>
+ <div class="viewtoggle">
+  <button id="frontBtn" class="active" onclick="setView('front')">Front</button>
+  <button id="backBtn" onclick="setView('back')">Back</button>
+ </div>
+ <div class="muscles" id="muscles"></div>
+ <div class="body-note">Tap any muscle group to explore.</div>
+</aside>
+
+<main class="card main">
+ <div class="hero">
+  <div><div class="kicker">Exercise library</div><h1 id="groupTitle">Shoulders</h1><p class="sub" id="groupSub">Build stronger, broader shoulders.</p></div>
+  <span class="badge" id="count">5 exercises</span>
+ </div>
+ <div class="exercise-grid" id="exerciseGrid"></div>
+
+ <section class="details">
+  <div class="detail-title">
+   <h2 id="exerciseTitle">Seated Dumbbell Shoulder Press</h2>
+   <button class="heart" id="heart" onclick="favourite()">♡</button>
+  </div>
+  <div class="quick-demo">
+   <div class="demo-top">
+    <span>⚡ ANATOMICAL QUICK DEMO</span>
+    <span id="demoTarget">Primary: Shoulders</span>
+   </div>
+   <div class="anatomy-stage" id="anatomyStage">
+    <div class="stage-label left">MUSCLE<br><b>WORKED</b></div>
+    <div class="stage-label right">4 SEC<br><b>LOOP</b></div>
+    <div class="floor"></div>
+    <div class="machine machine-seat"></div>
+    <div class="machine machine-frame"></div>
+    <div class="machine machine-bar"></div>
+    <div class="anatomy-person" id="anatomyPerson">
+      <div class="a-head"></div>
+      <div class="a-neck"></div>
+      <div class="a-torso"></div>
+      <div class="a-muscle shoulder-l"></div><div class="a-muscle shoulder-r"></div>
+      <div class="a-muscle chest-l"></div><div class="a-muscle chest-r"></div>
+      <div class="a-muscle lat-l"></div><div class="a-muscle lat-r"></div>
+      <div class="a-muscle arm-l"></div><div class="a-muscle arm-r"></div>
+      <div class="a-muscle forearm-l"></div><div class="a-muscle forearm-r"></div>
+      <div class="a-muscle quad-l"></div><div class="a-muscle quad-r"></div>
+      <div class="a-muscle ham-l"></div><div class="a-muscle ham-r"></div>
+      <div class="a-leg leg-a-l"></div><div class="a-leg leg-a-r"></div>
+    </div>
+    <div class="movement-line line-a">↕</div>
+    <div class="movement-line line-b">↕</div>
+   </div>
+   <div class="demo-controls">
+     <button onclick="replayDemo()">↻ Replay</button>
+     <div class="progress"><span id="demoProgress"></span></div>
+     <strong>0:04</strong>
+   </div>
+  </div>
+  <div class="meta">
+   <div class="meta-box"><b>Muscle worked</b><span id="metaMuscle">Shoulders</span></div>
+   <div class="meta-box"><b>Equipment</b><span id="metaEquipment">Dumbbells + bench</span></div>
+   <div class="meta-box"><b>Level</b><span id="metaLevel">Beginner</span></div>
+  </div>
+  <div class="instructions">
+   <h3>How to perform</h3>
+   <div id="steps"></div>
+  </div>
+  <div class="bottom">
+   <div class="sets"><strong>Sets &amp; reps</strong><span id="sets">3–4 Sets &nbsp;|&nbsp; 8–12 Reps</span></div>
+   <button class="add" onclick="addWorkout()">＋ Add to Workout</button>
+  </div>
+ </section>
+</main>
+</div>
+</div>
+<div class="toast" id="toast">Added to your workout ✓</div>
+
+<script>
+const groups={
+"Shoulders":{icon:"🏋️",desc:"Build stronger, broader shoulders.",ex:[
+["Seated Dumbbell Shoulder Press","Dumbbells + bench","Beginner","3–4 Sets | 8–12 Reps","qEwKCR5JCog",["Sit on a bench with back support and hold a dumbbell in each hand at shoulder height.","Press the dumbbells overhead until your arms are comfortably extended.","Pause briefly at the top, then lower the weights under control.","Keep your core braced and avoid arching your lower back."]],
+["Lateral Raises","Dumbbells","Beginner","3 Sets | 10–15 Reps","3VcKaXpzqRo",["Stand tall with a dumbbell in each hand.","Raise your arms out to the sides until roughly shoulder height.","Pause, then lower slowly without swinging.","Use a weight you can control throughout the movement."]],
+["Arnold Press","Dumbbells + bench","Intermediate","3 Sets | 8–12 Reps","6Z15_WdXmVw",["Start with dumbbells in front of your shoulders, palms facing you.","Rotate your palms outward as you press overhead.","Reverse the movement slowly to return to the start.","Keep the movement controlled rather than forcing the range."]],
+["Cable Lateral Raise","Cable machine","Beginner","3 Sets | 10–15 Reps","PPrzBWZDOhA",["Stand side-on to a low cable and hold the handle.","Raise your arm out to shoulder height.","Lower slowly and keep your torso still.","Repeat on both sides."]],
+["Face Pull","Cable + rope","Beginner","3 Sets | 12–15 Reps","rep-qVOkqgk",["Set the rope around upper-chest or face height.","Pull the rope toward your face with elbows high.","Squeeze your upper back and rear shoulders.","Return slowly to the start."]]]},
+"Chest":{icon:"💪",desc:"Build your chest with presses and fly movements.",ex:[
+["Barbell Bench Press","Barbell + bench","Intermediate","3–4 Sets | 6–10 Reps","rT7rgXQtDcI",["Lie back with your eyes under the bar.","Grip the bar evenly and lower it toward the middle of your chest.","Press the bar back up while keeping your feet planted.","Use a spotter when lifting heavy."]],
+["Incline Dumbbell Press","Dumbbells + incline bench","Intermediate","3 Sets | 8–12 Reps","8iPEnn-ltC8",["Set the bench to a moderate incline.","Start the dumbbells near your upper chest.","Press upward and slightly inward.","Lower under control and repeat."]],
+["Machine Chest Press","Chest press machine","Beginner","3 Sets | 8–12 Reps","xUm0BiZCWlQ",["Adjust the seat so the handles are around mid-chest height.","Press the handles forward without locking your elbows.","Pause briefly, then return slowly.","Keep your back against the pad."]],
+["Cable Fly","Cable machine","Beginner","3 Sets | 10–15 Reps","Iwe6AmxVf7o",["Set the pulleys around chest height.","Take a small step forward and keep a soft bend in your elbows.","Bring your hands together in front of your chest.","Return slowly while keeping tension on the chest."]]]},
+"Back":{icon:"🪽",desc:"Train your lats, traps and upper back.",ex:[
+["Lat Pulldown","Cable machine","Beginner","3 Sets | 8–12 Reps","CAwf7n6Luuc",["Sit securely and grip the bar slightly wider than shoulder width.","Pull the bar toward your upper chest.","Keep your torso controlled and squeeze your lats.","Slowly allow the bar to rise."]],
+["Seated Cable Row","Cable machine","Beginner","3 Sets | 8–12 Reps","GZbfZ033f74",["Sit tall with your feet braced.","Pull the handle toward your lower ribs.","Squeeze your shoulder blades together.","Extend your arms slowly without rounding your back."]],
+["One-Arm Dumbbell Row","Dumbbell + bench","Beginner","3 Sets | 8–12 / side","roCP6w8fB2Y",["Support one hand and knee on a bench.","Pull the dumbbell toward your hip.","Keep your shoulder controlled and avoid twisting.","Lower slowly and repeat."]],
+["Barbell Row","Barbell","Intermediate","3 Sets | 6–10 Reps","FWJR5Ve8bnQ",["Hinge at the hips with a neutral spine.","Pull the bar toward your lower ribs.","Pause briefly at the top.","Lower the bar under control."]]]},
+"Biceps":{icon:"💪",desc:"Build your biceps with controlled curls.",ex:[
+["Dumbbell Curl","Dumbbells","Beginner","3 Sets | 8–12 Reps","ykJmrZ5v0Oo",["Stand tall with arms by your sides.","Curl the dumbbells while keeping your elbows close to your body.","Squeeze the biceps at the top.","Lower slowly without swinging."]],
+["Hammer Curl","Dumbbells","Beginner","3 Sets | 10–12 Reps","zC3nLlEvin4",["Hold dumbbells with palms facing inward.","Curl while keeping your wrists neutral.","Pause near the top.","Lower under control."]],
+["Cable Curl","Cable machine","Beginner","3 Sets | 10–15 Reps","NFzTWp2qpiE",["Stand facing the cable with elbows close to your sides.","Curl the handle toward your shoulders.","Squeeze the biceps.","Return slowly while keeping tension."]]]},
+"Triceps":{icon:"🔱",desc:"Strengthen the back of your arms.",ex:[
+["Cable Triceps Pushdown","Cable + rope/bar","Beginner","3 Sets | 10–15 Reps","2-LAMcpzODU",["Stand tall and keep elbows close to your sides.","Push the handle down until your arms are extended.","Squeeze your triceps.","Allow the handle to rise slowly."]],
+["Overhead Triceps Extension","Dumbbell","Beginner","3 Sets | 10–15 Reps","YbX7Wd8jQ-Q",["Hold one dumbbell overhead with both hands.","Lower it behind your head under control.","Extend your elbows to raise it back up.","Keep your upper arms mostly still."]]]},
+"Abs":{icon:"🔥",desc:"Train your core with controlled movements.",ex:[
+["Cable Crunch","Cable + rope","Beginner","3 Sets | 10–15 Reps","2fbujeHj3W4",["Kneel facing the cable with the rope near your head.","Crunch your ribs toward your pelvis.","Keep the movement in your core rather than simply pulling with your arms.","Return slowly."]],
+["Hanging Knee Raise","Pull-up station","Intermediate","3 Sets | 8–15 Reps","Pr1ieGZ5atk",["Hang securely from the bar.","Brace your core and raise your knees toward your chest.","Pause briefly at the top.","Lower without swinging."]],
+["Plank","Bodyweight","Beginner","3 Rounds | 30–60 sec","pSHjTRCQxIw",["Place your forearms on the floor.","Keep your body in a straight line.","Brace your stomach and squeeze your glutes.","Hold while breathing normally."]]]},
+"Glutes":{icon:"🍑",desc:"Build stronger glutes and hips.",ex:[
+["Hip Thrust","Barbell + bench","Intermediate","3 Sets | 8–12 Reps","xDmFkJxPzeM",["Position your upper back against a bench.","Place the weight securely across your hips.","Drive through your feet and lift your hips.","Squeeze the glutes at the top, then lower slowly."]],
+["Cable Kickback","Cable machine","Beginner","3 Sets | 10–15 / side","S5gRAPp0YlI",["Attach an ankle strap to a low cable.","Brace yourself and drive the leg backward.","Squeeze the glute without arching your back.","Return slowly."]]]},
+"Quadriceps":{icon:"🦵",desc:"Train the front of your thighs.",ex:[
+["Leg Press","Leg press machine","Beginner","3 Sets | 8–12 Reps","IZxyjW7MPJQ",["Set the seat so your knees are comfortable at the bottom.","Lower the platform under control.","Drive through your feet to return.","Do not lock your knees hard at the top."]],
+["Leg Extension","Leg extension machine","Beginner","3 Sets | 10–15 Reps","YyvSfVjQeL0",["Adjust the pad just above your ankles.","Extend your knees smoothly.","Pause briefly at the top.","Lower slowly."]],
+["Goblet Squat","Dumbbell or kettlebell","Beginner","3 Sets | 8–15 Reps","MeIiIdhvXT4",["Hold the weight close to your chest.","Squat down while keeping your chest tall.","Drive through your feet to stand.","Keep your knees tracking in line with your toes."]]]},
+"Hamstrings":{icon:"🦵",desc:"Build the back of your thighs.",ex:[
+["Romanian Deadlift","Barbell or dumbbells","Intermediate","3 Sets | 8–12 Reps","JCXUYuzwNrM",["Stand tall with the weight in front of your thighs.","Push your hips back while keeping your spine neutral.","Lower until you feel a strong hamstring stretch.","Drive your hips forward to stand."]],
+["Seated Leg Curl","Leg curl machine","Beginner","3 Sets | 10–15 Reps","Orxowest56U",["Adjust the machine so the pad sits comfortably behind your ankles.","Curl your heels toward the seat.","Squeeze the hamstrings.","Return slowly."]]]},
+"Calves":{icon:"🦶",desc:"Strengthen and develop your lower legs.",ex:[
+["Standing Calf Raise","Calf machine","Beginner","3 Sets | 10–20 Reps","gwLzBJYoWlI",["Place the balls of your feet on the platform.","Lower your heels for a controlled stretch.","Drive through your toes to raise your heels.","Pause at the top and repeat."]],
+["Seated Calf Raise","Seated calf machine","Beginner","3 Sets | 12–20 Reps","JbyjNymD5M8",["Sit with the balls of your feet on the platform.","Lower your heels under control.","Raise your heels as high as comfortable.","Pause and repeat."]]]},
+"Forearms":{icon:"✊",desc:"Improve grip and forearm strength.",ex:[
+["Wrist Curl","Dumbbell or barbell","Beginner","3 Sets | 12–20 Reps","7ac_qmBJK5k",["Support your forearms on a bench or thighs.","Allow your wrists to extend slightly.","Curl the weight upward using your wrists.","Lower slowly."]],
+["Reverse Wrist Curl","Dumbbell or barbell","Beginner","3 Sets | 12–20 Reps","3VLT9Y3c7aA",["Support your forearms securely.","Lift the backs of your hands upward.","Keep the movement small and controlled.","Lower slowly."]]]},
+"Obliques":{icon:"↗️",desc:"Train the muscles along the sides of your core.",ex:[
+["Cable Woodchop","Cable machine","Beginner","3 Sets | 10–15 / side","pAplQXk3dkU",["Stand side-on to the cable.","Rotate your torso while keeping your core braced.","Move the handle diagonally across your body.","Return slowly and repeat on both sides."]],
+["Side Plank","Bodyweight","Beginner","3 Rounds | 20–45 sec / side","K2VljzCC16g",["Support yourself on one forearm.","Lift your hips so your body forms a straight line.","Brace your core and breathe steadily.","Repeat on both sides."]]]}
+};
+
+let currentGroup="Shoulders", currentIndex=0, favouriteState=false;
+
+function renderGroups(){
+ const box=document.getElementById("muscles"); box.innerHTML="";
+ Object.entries(groups).forEach(([name,g])=>{
+  const b=document.createElement("button"); b.className="muscle"+(name===currentGroup?" active":"");
+  b.innerHTML=`<span class="muscle-icon">${g.icon}</span><span><span class="muscle-name">${name}</span><span class="muscle-count">${g.ex.length} exercises</span></span><span class="chev">›</span>`;
+  b.onclick=()=>{currentGroup=name;currentIndex=0;renderGroups();renderExercises();updateAnatomy("Shoulders","Seated Dumbbell Shoulder Press");document.querySelector(".main").scrollIntoView({behavior:"smooth",block:"start"})};
+  box.appendChild(b);
+ });
+}
+function renderExercises(){
+ const g=groups[currentGroup], arr=g.ex;
+ document.getElementById("groupTitle").textContent=currentGroup;
+ document.getElementById("groupSub").textContent=g.desc;
+ document.getElementById("count").textContent=arr.length+" exercises";
+ const grid=document.getElementById("exerciseGrid");grid.innerHTML="";
+ arr.forEach((e,i)=>{
+  const b=document.createElement("button");b.className="exercise"+(i===currentIndex?" selected":"");
+  b.innerHTML=`<span class="thumb">${g.icon}</span><span><span class="exname">${e[0]}</span><span class="exmeta">${e[1]} · ${e[3]}</span></span><span class="chev">›</span>`;
+  b.onclick=()=>{currentIndex=i;renderExercises();};
+  grid.appendChild(b);
+ });
+ renderDetail(arr[currentIndex]);
+}
+function renderDetail(e){
+ document.getElementById("exerciseTitle").textContent=e[0];
+ const person=document.getElementById("demoPerson");
+ person.classList.remove("demo-replay"); void person.offsetWidth; person.classList.add("demo-replay");
+ document.querySelector(".demo-top span:last-child").textContent="Loops automatically · 4 sec";
+ document.getElementById("demoProgress").style.animation="none"; void document.getElementById("demoProgress").offsetWidth; document.getElementById("demoProgress").style.animation="progress 4s linear infinite";
+ document.getElementById("metaMuscle").textContent=currentGroup;
+ document.getElementById("metaEquipment").textContent=e[1];
+ updateAnatomy(currentGroup, e[0]);
+ document.getElementById("metaLevel").textContent=e[2];
+ document.getElementById("sets").textContent=e[3].replace("|"," | ");
+ document.getElementById("steps").innerHTML=e[5].map((s,i)=>`<div class="step"><span class="num">${i+1}</span><span>${s}</span></div>`).join("");
+}
+function setView(v){
+ document.getElementById("frontBtn").classList.toggle("active",v==="front");
+ document.getElementById("backBtn").classList.toggle("active",v==="back");
+ // The selector remains useful in either view; this keeps the UI simple and fast.
+ showToast(v==="back"?"Back muscle groups selected":"Front muscle groups selected");
+}
+function favourite(){
+ favouriteState=!favouriteState;
+ document.getElementById("heart").textContent=favouriteState?"♥":"♡";
+ showToast(favouriteState?"Saved to favourites":"Removed from favourites");
+}
+function replayDemo(){
+ const person=document.getElementById("anatomyPerson");
+ person.style.animation="none";
+ document.getElementById("demoProgress").style.animation="none";
+ void person.offsetWidth;
+ person.style.animation="bodyLift 4s ease-in-out infinite";
+ document.getElementById("demoProgress").style.animation="progress 4s linear infinite";
+ showToast("4-second demo replayed");
+}
+function updateAnatomy(group, exercise){
+ const stage=document.getElementById("anatomyStage");
+ const target=document.getElementById("demoTarget");
+ target.textContent="Primary: "+group;
+ stage.dataset.group=group;
+ // Front/back muscle emphasis is represented by the appropriate anatomical region.
+ document.querySelectorAll(".a-muscle").forEach(x=>x.style.filter="brightness(.85)");
+ const map={
+  Shoulders:[".shoulder-l",".shoulder-r"],
+  Chest:[".chest-l",".chest-r"],
+  Back:[".lat-l",".lat-r"],
+  Biceps:[".arm-l",".arm-r"],
+  Triceps:[".arm-l",".arm-r"],
+  Forearms:[".forearm-l",".forearm-r"],
+  Abs:[".chest-l",".chest-r"],
+  Obliques:[".lat-l",".lat-r"],
+  Glutes:[".lat-l",".lat-r"],
+  Quadriceps:[".quad-l",".quad-r"],
+  Hamstrings:[".quad-l",".quad-r"],
+  Calves:[".leg-a-l",".leg-a-r"]
+ };
+ (map[group]||[]).forEach(sel=>document.querySelectorAll(sel).forEach(x=>x.style.filter="brightness(1.45)"));
+}
+function addWorkout(){showToast("Added to your workout ✓")}
+function showToast(text){
+ const t=document.getElementById("toast");t.textContent=text;t.classList.add("show");
+ clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove("show"),1800);
+}
+renderGroups();renderExercises();updateAnatomy("Shoulders","Seated Dumbbell Shoulder Press");
+</script>
+</body>
+</html>
